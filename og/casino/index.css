@@ -1,0 +1,171 @@
+/* Complete the CSS styling according to the provided design */
+
+
+html {
+    background-color: black;
+    margin: 0;
+}
+
+body {
+    font-family: Courier, Arial, sans-serif;
+
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    line-height: 1;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+        margin: 0;
+
+
+}
+
+
+.main-container {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.25)), url("../images/giphy.gif");
+    background-size: cover;
+
+
+        display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 0.5px solid #0ff;
+
+
+}
+
+
+.game-title {
+    color: #fff;
+    text-shadow: 0 10px 60px #0ff;
+    font-family: hacked;
+}
+
+
+@font-face {
+  src: url("fonts/hacked.ttf");
+  font-family: hacked;
+}
+
+
+
+#message-el {
+    font-style: italic;
+        font-size: 18px;
+
+}
+
+#cards-el {
+    font-size: 24px;
+}
+#sum-el {
+    font-size: 24px;
+}
+
+
+
+
+.opponent-img-div {
+    width: 600px;
+    height: auto;
+}
+.opponent-img {
+    width: 100%;
+}
+
+
+.betting-menu {
+    background: rgb(0, 0, 0);
+    border: 0.5px solid #0ff;
+    box-shadow: 0 0 40px #0ff;
+}
+
+.center-column {
+    width: 800px;
+    background-image: url("../images/blue-table.jpg");
+    background-size: cover;
+    margin: 0 auto;
+    display: flex;
+    padding: 12px;
+    border-top: 8px solid #0A0C1A;
+
+}
+.game-column {
+    width: 800px;
+    background-image: url("../images/blue-table.jpg");
+    background-size: cover;
+    margin: 0 auto;
+    display: flex;
+        flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    gap: 10px;
+
+
+}
+
+.dialogue {
+        padding: 0 12px;
+
+    max-width: 60%;
+    height: 90px;
+
+    background: rgb(0, 0, 0);
+    border: 0.5px solid #0ff;
+    box-shadow: 0 0 40px #0ff;
+
+}
+
+.game-menu {
+    width: 40%;
+    /* height: 800px; */
+    background: rgb(0, 0, 0);
+    border: 0.5px solid #0ff;
+    box-shadow: 0 0 40px #0ff;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+        margin: 0 auto;
+        line-height: 1;
+
+}
+
+.game-btn {
+    color: #0ff;
+    width: 150px;
+    background: #000;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-weight: bold;
+    border: 1px solid #0ff;
+    border-radius: 2px;
+    margin-bottom: 2px;
+    margin-top: 2px;
+    cursor: pointer;
+}
+
+.game-btn:hover {
+    color: #000;
+    background: #0ff;
+    box-shadow: 0 10px 20px #0ff;
+
+}
+
+.reset {
+    color: #f00;
+    border: 1px solid #f00;
+
+}
+.reset:hover {
+    color: #000;
+    background: #f00;
+    box-shadow: 0 10px 20px #f00;
+
+}
+
+
+

@@ -1,5 +1,7 @@
 import "../css/War.css";
 import { useState, useEffect } from "react";
+import cardBack from "../assets/images/back.png";
+
 
 export default function War() {
   let computerScore = 0;
@@ -97,10 +99,10 @@ export default function War() {
             <h3 id="computer-score">Computer score: {computerScore}</h3>
             <div id="cards">
               <div className="card-slot">
-                <img src="../src/assets/images/back.png" className="card" />
+                <img src={cardBack} className="card" />
               </div>
               <div className="card-slot">
-                <img src="../src/assets/images/back.png" className="card" />
+                <img src={cardBack} className="card" />
               </div>
             </div>
             <h3 id="my-score">My score: {playerScore}</h3>

@@ -1,0 +1,36 @@
+.board-header {
+  padding: 1em;
+}
+.board-main {
+  padding: 1em;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 5em;
+}
+
+.board-footer {
+  display: flex;
+  gap: 2em;
+}
+
+.dice {
+  border-radius: 10px;
+  width: 100px;
+  /* height: 100px; */
+  padding: 20px;
+  font-family: digital;
+  color: #0ff;
+  text-shadow: 0 0 50px #0ff;
+  background-color: black;
+  margin: 0 auto;
+  font-size: 80px;
+  display: block;
+  align-items: center;
+  justify-content: center;
+}
+
+.active {
+  box-shadow: 0 0 18px 5px #0ff;
+}
+

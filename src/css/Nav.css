@@ -1,0 +1,53 @@
+@import "index.css";
+
+.Nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background-color: #1a244d;
+  color: #fff;
+  padding: 1.2em 1em;
+  box-shadow: -2px 6px 18px 3px rgba(0,0,0,0.75);
+
+}
+
+.nav-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.nav-logo {
+  height: 40px;
+}
+.nav-list {
+  display: flex;
+  gap: 2em;
+  justify-content: center;
+  align-items: center;
+}
+.nav-item {
+  list-style: none;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+}
+.nav-link {
+  text-decoration: none;
+  color: inherit;
+  font-weight: bold;
+  transition: all 300ms;
+}
+.nav-link:hover {
+  color: aqua;
+}
+
+.theme-btn {
+  background-color: inherit;
+  border: none;
+  color: #fff;
+  font-size: 1.6rem;
+  width: 40px;
+  transition: text-shadow 0.2s;
+}
+.theme-btn:hover {
+  text-shadow: 0 0 15px white;
+}

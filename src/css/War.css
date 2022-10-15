@@ -1,0 +1,12 @@
+.card-slot {
+  border: 1px solid black;
+  border-radius: 5px;
+  height: 120px;
+  width: calc(120px * 5 / 7);
+}
+
+.board-header {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}

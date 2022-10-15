@@ -1,0 +1,47 @@
+
+
+
+.Dashboard {
+    display: flex;
+    justify-content: center;
+    gap: 2em;
+    width: 85%;
+    margin: 0 auto;
+    padding: 1em 0;
+    background-image: url("../assets/images/blue-table.jpg");
+    box-shadow: -2px 6px 18px 3px rgba(0,0,0,0.75);
+    margin-top: 2em;
+}
+
+
+
+
+.player-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+}
+.profile-avatar {
+    border-radius: 50%;
+    width: 100px;
+    padding-right: .5em;
+}
+
+.betting-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.betting {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* height: 100px; */
+    background-size: cover;
+}
+

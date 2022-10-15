@@ -46,3 +46,22 @@
     background-size: cover;
 }
 
+.bet-btn {
+  width: 30px;
+  font-weight: 500;
+  background-color: black;
+}
+.bet-minus {
+  color: #f00;
+  border: 1px solid #f00;
+
+}
+.bet-plus {
+  color: #0f0;
+  border: 1px solid #0f0;
+
+}
+.bet-reset {
+  color: #ff0;
+  border: 1px solid #ff0;
+}

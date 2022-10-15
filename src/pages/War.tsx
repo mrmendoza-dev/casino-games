@@ -92,11 +92,15 @@ export default function War() {
             <button id="new-deck" className="game-btn" onClick={newDeck}>
               New Deck
             </button>
+
+            <div>
+              <h3 id="my-score">My score: {playerScore}</h3>
+              <h3 id="computer-score">Computer score: {computerScore}</h3>
+            </div>
             <p>Remaining Cards: {remaining}</p>
           </div>
 
           <div className="board-main">
-            <h3 id="computer-score">Computer score: {computerScore}</h3>
             <div id="cards">
               <div className="card-slot">
                 <img src={cardBack} className="card" />
@@ -105,7 +109,6 @@ export default function War() {
                 <img src={cardBack} className="card" />
               </div>
             </div>
-            <h3 id="my-score">My score: {playerScore}</h3>
           </div>
 
           <div className="board-footer">

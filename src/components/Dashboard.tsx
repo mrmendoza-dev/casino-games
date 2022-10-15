@@ -42,7 +42,6 @@ function increment(multi: any) {
       </div>
 
       <div className="betting-menu">
-
         <div className="betting">
           <p>Adjust Your Bet</p>
           <p>${bet}</p>
@@ -53,46 +52,54 @@ function increment(multi: any) {
             onClick={() => {
               decrement(10);
             }}
+            className="bet-btn bet-minus"
           >
-            - 10
+            10
           </button>
           <button
             onClick={() => {
               decrement(5);
             }}
+            className="bet-btn bet-minus"
           >
-            - 5
+            5
           </button>
           <button
             onClick={() => {
               decrement(1);
             }}
+            className="bet-btn bet-minus"
           >
-            - 1
+            1
           </button>
 
-          <button onClick={resetBet}>X</button>
+          <button onClick={resetBet} className="bet-btn bet-reset">
+            X
+          </button>
 
           <button
             onClick={() => {
               increment(1);
             }}
+            className="bet-btn bet-plus"
           >
-            + 1
+            1
           </button>
           <button
             onClick={() => {
               increment(5);
             }}
+            className="bet-btn bet-plus"
           >
-            + 5
+            5
           </button>
           <button
             onClick={() => {
               increment(10);
             }}
+            className="bet-btn bet-plus"
           >
-            + 10
+            10
           </button>
         </div>
       </div>

@@ -74,17 +74,21 @@ export default function Deck() {
 
 
     function drawCard() {
-        let tempList = deck;
-        let card: any = tempList.pop();
-        setDeck([...tempList]);
-        setDrawn([...drawn, card])
-        return card;
+        if (deck.length >= 1) {
+            let tempList = deck;
+            let card: any = tempList.pop();
+            setDeck([...tempList]);
+            setDrawn([...drawn, card]);
+            return card;
+        }
     }
     function drawHand() {
         let numcards = 5;
         let hand = [];
-        for (let i=0; i< numcards; i++) {
-            hand.push(drawCard())
+        if (deck.length >= numcards) {
+            for (let i = 0; i < numcards; i++) {
+            hand.push(drawCard());
+            }
         }
         console.log(hand)
     }

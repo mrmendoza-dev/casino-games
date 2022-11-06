@@ -12,6 +12,7 @@ export default function Deck() {
     >([]);
     const [jokers, setJokers] = useState(false);
     const [display, setDisplay] = useState(true);
+    const [hand, setHand] = useState([])
     let remainingCards = deck.length;
 
     const values = [
@@ -78,6 +79,7 @@ export default function Deck() {
         if (deck.length >= 1) {
             let tempList = deck;
             let card: any = tempList.pop();
+            card.show = true;
             setDeck([...tempList]);
             setDrawn([...drawn, card]);
             return card;
@@ -85,13 +87,17 @@ export default function Deck() {
     }
     function drawHand() {
         let numcards = 5;
-        let hand = [];
+        let drawHand: any = [];
         if (deck.length >= numcards) {
             for (let i = 0; i < numcards; i++) {
-            hand.push(drawCard());
+                let newCard = drawCard();
+                // newCard.show = true;
+                drawHand.push(newCard);
             }
         }
-        console.log(hand)
+
+        console.log(drawHand);
+        setHand(drawHand);
     }
 
     function hideAll() {
@@ -109,6 +115,9 @@ export default function Deck() {
 
     function resetDeck() {
         generateDeck();
+        // shuffleDeck();
+        setHand([]);
+        setDrawn([]);
     }
     function toggleJokers() {
       setJokers(prevState => !prevState);
@@ -116,7 +125,20 @@ export default function Deck() {
     }
 
     function scoreHand() {
+        // 1. Royal Flush
+        // 2. Straight Flush 
+        // 3. Four of a Kind
+        // 4. Full House
+        // 5. Flush
+        // 6. Straight
+        // 7. Three of a Kind
+        // 8. Two Pair
+        // 9. Pair
+        // 10. High Card
 
+        // Check for Flush
+        
+        hand.forEach
     }
 
 
@@ -154,6 +176,15 @@ export default function Deck() {
           <button className="deck-btn" onClick={drawHand}>
             Draw Hand
           </button>
+        </div>
+
+        <div className="hand">
+          <div className="hand-cards">
+            {hand.map((card: any) => {
+              return <Card card={card} key={nanoid()} />;
+            })}
+          </div>
+          <p className="hand-score">High Card</p>
         </div>
 
         <div className="cards">

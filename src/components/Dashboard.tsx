@@ -26,7 +26,9 @@ function decrement(multi: any) {
 }
 
 function increment(multi: any) {
+    if (bet + 1 * multi <= player.funds) {
   setBet((prevBet) => prevBet + 1 * multi);
+    }
 }
 
 

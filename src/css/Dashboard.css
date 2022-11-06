@@ -47,7 +47,9 @@
 }
 
 .bet-btn {
-  width: 30px;
+  text-align: center;
+  width: 35px;
+  height: 30px;
   font-weight: 500;
   background-color: black;
 }

@@ -57,17 +57,17 @@ export default function Dice() {
 
           <div className="board-main">
             <div>
-              <h1>
+              <p>
                 Score:
                 <span id="player1Scoreboard">{playerScore}</span>
-              </h1>
+              </p>
               <div className="dice active">-</div>
             </div>
             <div>
-              <h1>
+              <p>
                 Score:
                 <span id="player2Scoreboard">{computerScore}</span>
-              </h1>
+              </p>
               <div className="dice">-</div>
             </div>
           </div>

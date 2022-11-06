@@ -23,9 +23,9 @@ export default function DarkMode() {
 
   const darkTheme = {
     font: "#f7f7ff",
-    bg: "#242424",
+    bg: "#161030",
     contrast: "#641ddf",
-    accent1: "#2f5270",
+    accent1: "#1A244D",
     accent2: "#1e375a",
     shadow: "#333",
   };

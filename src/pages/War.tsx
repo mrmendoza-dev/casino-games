@@ -85,43 +85,38 @@ export default function War() {
 
   return (
     <div className="War container">
-        <div className="game-board">
-          <p className="game-title">War</p>
+      <div className="game-board">
+        <p className="game-title">War</p>
 
-          <div className="board-header">
-            <button id="new-deck" className="game-btn" onClick={newDeck}>
-              New Deck
-            </button>
+        <div className="board-header">
+          <button className="game-btn" onClick={newDeck}>
+            New Deck
+          </button>
 
-            <div>
-              <h3 id="my-score">My score: {playerScore}</h3>
-              <h3 id="computer-score">Computer score: {computerScore}</h3>
-            </div>
-            <p>Remaining Cards: {remaining}</p>
+          <div>
+            <p>My score: {playerScore}</p>
+            <p>Computer score: {computerScore}</p>
           </div>
+          <p>Remaining Cards: {remaining}</p>
+        </div>
 
-          <div className="board-main">
-            <div id="cards">
-              <div className="card-slot">
-                <img src={cardBack} className="card" />
-              </div>
-              <div className="card-slot">
-                <img src={cardBack} className="card" />
-
-              </div>
+        <div className="board-main">
+          <div className="cards">
+            <div className="card-slot">
+              <img src={cardBack} className="card" />
             </div>
-          </div>
-
-          <div className="board-footer">
-            <button
-              id="draw-cards"
-              className="game-btn draw"
-              onClick={drawCard}
-            >
-              Draw
-            </button>
+            <div className="card-slot">
+              <img src={cardBack} className="card" />
+            </div>
           </div>
         </div>
+
+        <div className="board-footer">
+          <button className="game-btn draw" onClick={drawCard}>
+            Draw
+          </button>
+        </div>
       </div>
+    </div>
   );
 }

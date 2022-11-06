@@ -66,21 +66,19 @@ export default function Blackjack() {
           </div>
 
           <div className="board-main">
-            <p id="cards-el"></p>
-            <p id="sum-el"></p>
+            <div className="cards-drawn"></div>
+            <p >Total: </p>
           </div>
 
           <div className="board-footer">
-            <p id="player-el"></p>
 
             <button
-              id="start-game-btn"
               className="game-btn"
               onClick={startGame}
             >
               START GAME
             </button>
-            <button id="new-card-btn" className="game-btn" onClick={newCard}>
+            <button className="game-btn" onClick={newCard}>
               NEW CARD
             </button>
           </div>

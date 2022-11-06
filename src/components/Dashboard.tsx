@@ -7,7 +7,7 @@ import avatar from "../assets/images/avatar.jpg"
 export default function Dashboard(props: any) {
 
 const [player, setPlayer] = useState({
-      name: "Degenerate",
+      name: "Player",
       funds: 250,
     });
 
@@ -32,12 +32,16 @@ function increment(multi: any) {
 
 
   return (
-    <div className="Dashboard">
+    <div className="Dashboard container">
       <div className="player-info">
         <img src={avatar} className="profile-avatar" />
         <div>
           <p>{player.name}</p>
           <p>${player.funds}</p>
+          <div className="">
+            <button className="">Add Funds</button>
+            <button className="">Cash Out</button>
+          </div>
         </div>
       </div>
 
@@ -48,6 +52,22 @@ function increment(multi: any) {
         </div>
 
         <div className="bet-btns">
+          <button
+            onClick={() => {
+              decrement(100);
+            }}
+            className="bet-btn bet-minus"
+          >
+            100
+          </button>
+          <button
+            onClick={() => {
+              decrement(25);
+            }}
+            className="bet-btn bet-minus"
+          >
+            25
+          </button>
           <button
             onClick={() => {
               decrement(10);
@@ -100,6 +120,22 @@ function increment(multi: any) {
             className="bet-btn bet-plus"
           >
             10
+          </button>
+          <button
+            onClick={() => {
+              increment(25);
+            }}
+            className="bet-btn bet-plus"
+          >
+            25
+          </button>
+          <button
+            onClick={() => {
+              increment(100);
+            }}
+            className="bet-btn bet-plus"
+          >
+            100
           </button>
         </div>
       </div>

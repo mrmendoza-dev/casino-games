@@ -1,6 +1,7 @@
 import "../css/War.css";
 import { useState, useEffect } from "react";
 import cardBack from "../assets/images/back.png";
+import Card from "../components/Card";
 
 
 export default function War() {
@@ -19,10 +20,10 @@ export default function War() {
       "8",
       "9",
       "10",
-      "JACK",
-      "QUEEN",
-      "KING",
-      "ACE",
+      "j",
+      "q",
+      "k",
+      "a",
     ];
     const card1ValueIndex = valueOptions.indexOf(card1.value);
     const card2ValueIndex = valueOptions.indexOf(card2.value);
@@ -83,10 +84,9 @@ export default function War() {
   }
 
   return (
-    <div className="War">
-      <div className="container">
+    <div className="War container">
         <div className="game-board">
-          <p className="game-title">Game of War</p>
+          <p className="game-title">War</p>
 
           <div className="board-header">
             <button id="new-deck" className="game-btn" onClick={newDeck}>
@@ -107,6 +107,7 @@ export default function War() {
               </div>
               <div className="card-slot">
                 <img src={cardBack} className="card" />
+
               </div>
             </div>
           </div>
@@ -122,6 +123,5 @@ export default function War() {
           </div>
         </div>
       </div>
-    </div>
   );
 }

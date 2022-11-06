@@ -1,0 +1,67 @@
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    /* overflow-x: scroll; */
+    /* max-width: 1200px; */
+}
+.Deck {
+    margin: 0 auto;
+}
+
+.Card {
+    background-color: beige;
+    aspect-ratio: 2 / 3;
+    object-fit: fill;
+    width: 100px;
+    max-width: 200px;
+    /* height: 500px; */
+    border: 1px solid #5f5f5f;
+    display: flex;
+    border-radius: .8em;
+    cursor: pointer;
+    transition: all 200ms;
+}
+.Card:hover {
+    transform: scale(1.2);
+    z-index: 10;
+    box-shadow: 0 0 10px #353535;
+}
+
+.card-img {
+    /* max-width: 100%; */
+    /* max-height: 100%; */
+    /* border: 1px solid red; */
+    object-fit: cover;
+    width: 100%;
+    padding: .6em .4em;
+    pointer-events: none
+
+}
+.card-back {
+    /* max-width: 100%; */
+    /* max-height: 100%; */
+    /* border: 1px solid red; */
+    object-fit: cover;
+    width: 100%;
+    pointer-events: none;
+    background-color: white;
+    border-radius: inherit;
+}
+
+.CardDeck {
+    display: flex;
+    flex-direction: column;
+
+}
+
+
+.deck-controls {
+    display: flex;
+    justify-content: center;
+}
+.deck-btn {
+    padding: 1em;
+    font-size: 1.2rem;
+    font-weight: 600;
+}

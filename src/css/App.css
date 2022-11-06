@@ -5,6 +5,7 @@
     background-color: rgb(22, 16, 48);
     height: 100vh;
     user-select: none;
+    overflow: hidden;
 }
 
 .game-board {
@@ -21,13 +22,12 @@
 }
 
 .container {
-    margin: 0 auto;
-    padding: 50px;
-    background-size: cover;
-    color: white;
+  margin: 0 auto;
+  padding: 50px;
+  background-size: cover;
+  max-width: 1200px;
+  width: 80%;
 }
-
-
 
 
 .board-header {
@@ -61,7 +61,7 @@
 
 .game-title {
     font-size: 2rem;
-    font-weight: 500;
+    font-weight: 600;
 }
 .game-message {
     font-size: 1.4rem;

@@ -30,13 +30,14 @@ export default function Deck() {
         "a",
     ];
     const suits = ["clubs", "diamonds", "hearts", "spades"];
-
+    let url =
+      "https://mendoza-showcase.s3.us-west-2.amazonaws.com/casino-games/cards";
 
     function generateDeck() {
         const cards = [];
         suits.map((suit)=> {
             values.map((value)=> {
-                let card = {suit: suit, value: value, show: true, img: `../src/assets/cards/${suit}-${value}.png`}
+                let card = {suit: suit, value: value, show: true, img: `${url}/${suit}-${value}.png`}
                 cards.push(card);
             })
         })
@@ -46,13 +47,13 @@ export default function Deck() {
               suit: "joker",
               value: "b",
               show: true,
-              img: `../src/assets/cards/joker-b.png`,
+              img: `${url}/joker-b.png`,
             });
             cards.push({
               suit: "joker",
               value: "r",
               show: true,
-              img: `../src/assets/cards/joker-r.png`,
+              img: `${url}/joker-r.png`,
             });
         }
         setDeck(cards);

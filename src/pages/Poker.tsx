@@ -1,6 +1,5 @@
 import "../css/War.css";
 import { useState, useEffect } from "react";
-import cardBack from "../assets/images/back.png";
 
 
 export default function Poker() {

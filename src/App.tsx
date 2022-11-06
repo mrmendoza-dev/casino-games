@@ -6,6 +6,7 @@ import Dashboard from "./components/Dashboard";
 import Dice from "./pages/Dice";
 import Blackjack from "./pages/Blackjack";
 import War from "./pages/War";
+import Poker from "./pages/Poker";
 
 function App() {
   
@@ -23,6 +24,10 @@ function App() {
       name: "Dice",
       path: "/dice",
     },
+    {
+      name: "Poker",
+      path: "/poker",
+    },
   ];
 
 
@@ -37,6 +42,7 @@ function App() {
         <Route path="/blackjack" element={<Blackjack />} />
         <Route path="/war" element={<War />} />
         <Route path="/dice" element={<Dice />} />
+        <Route path="/poker" element={<Poker />} />
       </Routes>
     </div>
   );

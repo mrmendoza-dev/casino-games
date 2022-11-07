@@ -28,7 +28,8 @@ export default function Nav(props: any) {
         ))}
       </ul>
 
-      <DarkMode />
+      {/* <DarkMode /> */}
+      <div className=""></div>
     </div>
   );
 }

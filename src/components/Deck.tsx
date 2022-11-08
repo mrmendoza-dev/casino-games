@@ -147,7 +147,7 @@ export default function Deck() {
 
 
 
-  function scoreHand(cards) {
+  function scoreHand(cards: any) {
     // 1. Royal Flush
     // 2. Straight Flush
     // 3. Four of a Kind

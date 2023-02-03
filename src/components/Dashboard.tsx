@@ -41,8 +41,8 @@ function increment(multi: any) {
           <p>{player.name}</p>
           <p>${player.funds}</p>
           <div className="">
-            <button className="">Add Funds</button>
-            <button className="">Cash Out</button>
+            <button className="btn">Add Funds</button>
+            <button className="btn">Cash Out</button>
           </div>
         </div>
       </div>

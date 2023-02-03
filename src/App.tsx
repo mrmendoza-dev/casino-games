@@ -12,36 +12,10 @@ import CardDeck from "./pages/CardDeck";
 import Home from "./pages/Home";
 
 function App() {
-  
-  
-  const navLinks = [
-    {
-      name: "Poker",
-      path: "/poker",
-    },
-    {
-      name: "Blackjack",
-      path: "/blackjack",
-    },
-    {
-      name: "War",
-      path: "/war",
-    },
-    {
-      name: "Dice",
-      path: "/dice",
-    },
-    {
-      name: "Deck",
-      path: "/deck",
-    },
-  ];
-
-
 
   return (
     <div className="App">
-      <Nav links={navLinks} />
+      <Nav />
       <Dashboard />
 
       <div className="container">

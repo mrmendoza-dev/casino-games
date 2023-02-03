@@ -61,11 +61,6 @@
     display: flex;
     justify-content: center;
 }
-.deck-btn {
-    padding: 1em;
-    font-size: 1.2rem;
-    font-weight: 600;
-}
 
 
 .hand {
@@ -88,3 +83,29 @@
     font-weight: 600;
 }
 
+
+
+.deck-btn {
+  color: #0ff;
+  background-color: black;
+  border: 1px solid #0ff;
+  padding: 0.5em 1em;
+  font-size: 16px;
+  transition: all 200ms;
+}
+
+.deck-btn:hover {
+  color: #000;
+  background: #0ff;
+  box-shadow: 0 5px 20px #0ff;
+}
+
+.reset-btn {
+  color: #f00;
+  border: 1px solid #f00;
+}
+.reset-btn:hover {
+  color: #000;
+  background: #f00;
+  box-shadow: 0 10px 20px #f00;
+}

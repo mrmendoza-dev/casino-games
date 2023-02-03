@@ -123,7 +123,7 @@ export default function Deck() {
     setHand(drawHand);
     let score = checkHand(drawHand);
     console.log(score);
-        setHandScore(score);
+    setHandScore(score);
 
   }
 
@@ -263,54 +263,6 @@ function checkHand(hand: any) {
   return "High Card";
 }
 
-
-
-
-  function scoreHand(cards: any) {
-    // 1. Royal Flush
-    // 2. Straight Flush
-    // 3. Four of a Kind
-    // 4. Full House
-    // 5. Flush
-    // 6. Straight
-    // 7. Three of a Kind
-    // 8. Two Pair
-    // 9. Pair
-    // 10. High Card
-
-    // Organize cards in order
-    // Check for Flush (Then Straight, then Royal)
-    // Check for pairs (1 Pair, 2 Pairs, 3 of a kind, 4 of a kind, Full House)
-
-
-    let score = "High Card";
-
-    function checkFlush() {
-      let suit = cards[0].suit;
-
-      let flush = cards.every((card: any) => {
-        return card.suit === suit;
-      });
-
-      return flush;
-    }
-
-    if (checkFlush()) {
-      score = "Flush";
-    }
-
-    
-    return score;
-  }
-
-
-  //   function toggleHide(id: any) {
-  //     setDeck((oldDeck) =>
-  //       oldDeck.map((card) => {
-  //         return card.id === id ? { ...card, card: !card.show } : card;
-  //       })
-  //     );
-
   useEffect(() => {
     generateDeck();
   }, []);
@@ -323,22 +275,22 @@ function checkHand(hand: any) {
   return (
     <div className="Deck">
       <div className="deck-controls">
-        <button className="deck-btn" onClick={hideAll}>
+        <button className="btn" onClick={hideAll}>
           {display ? "Hide" : "Show"}
         </button>
-        <button className="deck-btn" onClick={shuffleDeck}>
+        <button className="btn" onClick={shuffleDeck}>
           Shuffle
         </button>
-        <button className="deck-btn" onClick={drawCard}>
+        <button className="btn" onClick={drawCard}>
           Draw
         </button>
-        <button className="deck-btn" onClick={resetDeck}>
+        <button className="btn" onClick={resetDeck}>
           Reset
         </button>
-        <button className="deck-btn" onClick={toggleJokers}>
+        <button className="btn" onClick={toggleJokers}>
           {jokers ? "Disable Jokers" : "Enable Jokers"}
         </button>
-        <button className="deck-btn" onClick={drawHand}>
+        <button className="btn" onClick={drawHand}>
           Draw Hand
         </button>
       </div>

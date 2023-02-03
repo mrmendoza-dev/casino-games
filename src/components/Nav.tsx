@@ -8,6 +8,28 @@ import { nanoid } from "nanoid";
 
 
 export default function Nav(props: any) {
+  const navLinks = [
+    // {
+    //   name: "Poker",
+    //   path: "/poker",
+    // },
+    // {
+    //   name: "Blackjack",
+    //   path: "/blackjack",
+    // },
+    // {
+    //   name: "War",
+    //   path: "/war",
+    // },
+    // {
+    //   name: "Dice",
+    //   path: "/dice",
+    // },
+    {
+      name: "Deck",
+      path: "/deck",
+    },
+  ];
 
 
   return (
@@ -19,7 +41,7 @@ export default function Nav(props: any) {
       </div>
 
       <ul className="nav-list">
-        {props.links.map((link: any) => (
+        {navLinks.map((link: any) => (
           <li className="nav-item" key={nanoid()}>
             <Link className="nav-link" to={link.path}>
               {link.name}

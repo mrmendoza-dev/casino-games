@@ -1,21 +1,15 @@
-
-
-
 .Dashboard {
-    display: flex;
-    justify-content: center;
-    gap: 2em;
-    width: 85%;
-    margin: 0 auto;
-    padding: 1em 0;
-    background-image: url("../assets/images/blue-table.jpg");
-    box-shadow: -2px 6px 18px 3px rgba(0,0,0,0.75);
-    margin-top: 2em;
-    min-width: min-content;
+  display: flex;
+  justify-content: center;
+  gap: 2em;
+  width: 85%;
+  margin: 0 auto;
+  padding: 1em 0;
+  background-image: url("../assets/images/blue-table.jpg");
+  box-shadow: -2px 6px 18px 3px rgba(0, 0, 0, 0.75);
+  margin-top: 2em;
+  min-width: min-content;
 }
-
-
-
 
 .player-info {
   display: flex;
@@ -24,18 +18,18 @@
   font-size: 1.2rem;
 }
 .profile-avatar {
-    border-radius: 50%;
-    width: 100px;
-    padding-right: .5em;
+  border-radius: 50%;
+  width: 100px;
+  padding-right: 0.5em;
 }
 
 .betting-menu {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    font-size: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 1.2rem;
 }
 
 .betting {
@@ -43,7 +37,7 @@
   flex-direction: column;
   justify-content: center;
   /* height: 100px; */
-    background-size: cover;
+  background-size: cover;
 }
 
 .bet-btn {
@@ -56,12 +50,10 @@
 .bet-minus {
   color: #f00;
   border: 1px solid #f00;
-
 }
 .bet-plus {
   color: #0f0;
   border: 1px solid #0f0;
-
 }
 .bet-reset {
   color: #ff0;

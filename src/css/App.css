@@ -1,29 +1,28 @@
-
 :root {
   --clr-bg: #161030;
   --clr-font: #ffffff;
-  --clr-accent1: #1A244D;
+  --clr-accent1: #1a244d;
 }
 
 .App {
-    color: var(--clr-font);
-    background-color: var(--clr-bg);
-    height: 100vh;
-    user-select: none;
-    overflow: hidden;
+  color: var(--clr-font);
+  background-color: var(--clr-bg);
+  height: 100vh;
+  user-select: none;
+  overflow: hidden;
 }
 
 .game-board {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-image: url("../assets/images/blue-table.jpg");
-    background-size: cover;
-    margin: 0 auto;
-    text-align: center;
-    box-shadow: -2px 6px 18px 3px rgba(0,0,0,0.75);
-    padding: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-image: url("../assets/images/blue-table.jpg");
+  background-size: cover;
+  margin: 0 auto;
+  text-align: center;
+  box-shadow: -2px 6px 18px 3px rgba(0, 0, 0, 0.75);
+  padding: 1em;
 }
 
 .container {
@@ -33,7 +32,6 @@
   max-width: 1200px;
   width: 80%;
 }
-
 
 .board-header {
   padding: 1em;
@@ -51,10 +49,6 @@
   gap: 2em;
 }
 
-
-
-
-
 .main-container {
   background-size: cover;
 
@@ -63,36 +57,30 @@
   align-items: center;
 }
 
-
 .game-title {
-    font-size: 2rem;
-    font-weight: 600;
+  font-size: 2rem;
+  font-weight: 600;
 }
 .game-message {
-    font-size: 1.4rem;
+  font-size: 1.4rem;
 }
 
 .game-btn {
-    color: #0ff;
-    background-color: black;
-    border: 1px solid #0ff;
-    padding: .5em 1em;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    transition: all 300ms;
-
+  color: #0ff;
+  background-color: black;
+  border: 1px solid #0ff;
+  padding: 0.5em 1em;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  transition: all 300ms;
 }
-
-
 
 .game-btn:hover {
   color: #000;
   background: #0ff;
   box-shadow: 0 5px 20px #0ff;
 }
-
-
 
 .reset-btn {
   color: #f00;
@@ -103,6 +91,3 @@
   background: #f00;
   box-shadow: 0 10px 20px #f00;
 }
-
-
-

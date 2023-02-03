@@ -9,17 +9,16 @@ Card.defaultProps = {
   value: "a",
   suit: "spades",
   show: false,
-  img: "../src/assets/cards/back.png",
+  img: "https://mendoza-showcase.s3.us-west-2.amazonaws.com/casino-games/cards/back.png",
 };
 
 
 export default function Card(props: any) {
-
     const card = props.card;
-    let url = "https://mendoza-showcase.s3.us-west-2.amazonaws.com/casino-games/cards";
+    let bucketUrl =
+      "https://mendoza-showcase.s3.us-west-2.amazonaws.com/casino-games/cards";
 
     function getCard() {
-        console.log(card);
     }
 
     
@@ -28,7 +27,7 @@ export default function Card(props: any) {
       {card.show ? (
         <img className="card-img" src={card.img} />
       ) : (
-        <img className="card-back" src={`${url}/back.png`} />
+        <img className="card-back" src={`${bucketUrl}/back.png`} />
       )}
     </div>
   );

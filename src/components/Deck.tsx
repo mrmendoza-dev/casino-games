@@ -13,25 +13,11 @@ export default function Deck() {
   const [jokers, setJokers] = useState(false);
   const [display, setDisplay] = useState(true);
   const [hand, setHand] = useState([]);
-    const [handScore, setHandScore] = useState("");
+  const [handScore, setHandScore] = useState("");
 
   let remainingCards = deck.length;
 
-  const values = [
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-    "j",
-    "q",
-    "k",
-    "a",
-  ];
+
 
   const suits = ["clubs", "diamonds", "hearts", "spades"];
 
@@ -146,6 +132,7 @@ export default function Deck() {
     setHand([]);
     setDrawn([]);
   }
+  
   function toggleJokers() {
     setJokers((prevState) => !prevState);
   }
@@ -153,19 +140,27 @@ export default function Deck() {
 function checkHand(hand: any) {
   // Sort the hand in ascending order
   hand.sort((a: any, b: any) => a.value - b.value);
-      console.log(hand);
-      setHand(hand);
-
+  console.log(hand);
+  setHand(hand);
 
   // Check for Royal Flush
-  // let isRoyalFlush = true;
-  // for (let i = 8; i < hand.length; i++) {
-  //   if (hand[i].value !== 14 || hand[i].suit !== hand[0].suit) {
-  //     isRoyalFlush = false;
-  //     break;
-  //   }
-  // }
-  // if (isRoyalFlush) return "Royal Flush";
+  let isRoyalFlush = true;
+  for (let i = 1; i < hand.length; i++) {
+    if (
+      hand[i].value !== hand[i - 1].value + 1 ||
+      hand[i].suit !== hand[0].suit
+    ) {
+      isRoyalFlush = false;
+      break;
+    }
+  }
+
+  if (
+    isRoyalFlush &&
+    hand[0].value === 10 &&
+    hand[hand.length - 1].value === 14
+  )
+    return "Royal Flush";
 
   // Check for Straight Flush
   let isStraightFlush = true;

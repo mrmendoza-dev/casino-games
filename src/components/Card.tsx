@@ -5,18 +5,18 @@ import { useState, useEffect } from "react";
 import { nanoid } from "nanoid";
 import "../css/Deck.css";
 
+
+
 Card.defaultProps = {
   value: "a",
   suit: "spades",
   show: false,
-  img: "https://mendoza-showcase.s3.us-west-2.amazonaws.com/casino-games/cards/back.png",
+  img: "./cards/back.png",
 };
 
 
 export default function Card(props: any) {
     const card = props.card;
-    let bucketUrl =
-      "https://mendoza-showcase.s3.us-west-2.amazonaws.com/casino-games/cards";
 
     function getCard() {
     }
@@ -27,7 +27,7 @@ export default function Card(props: any) {
       {card.show ? (
         <img className="card-img" src={card.img} />
       ) : (
-        <img className="card-back" src={`${bucketUrl}/back.png`} />
+        <img className="card-back" src={`./cards/back.png`} />
       )}
     </div>
   );

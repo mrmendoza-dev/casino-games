@@ -1,10 +1,7 @@
-import "../css/Dice.css";
-import { useState, useEffect } from "react";
-
-
+import "@/styles/Dice.css";
+import { useState } from "react";
 
 export default function Dice() {
-
   const [playerScore, setPlayerScore] = useState(0);
   const [computerScore, setComputerScore] = useState(0);
   const [playerTurn, setPlayerTurn] = useState(true);
@@ -20,22 +17,20 @@ export default function Dice() {
     }
 
     if (playerScore >= 20) {
-      setGameOver(true)
+      setGameOver(true);
     } else if (computerScore >= 20) {
       setGameOver(true);
     }
 
-    setPlayerTurn(prevTurn => !prevTurn);
-
+    setPlayerTurn((prevTurn) => !prevTurn);
   }
 
   function resetGame() {
     let start = Math.floor(Math.random() * 2) + 1;
     start ? setPlayerTurn(true) : setPlayerTurn(false);
-    setPlayerScore(0)
+    setPlayerScore(0);
     setComputerScore(0);
   }
-
 
   return (
     <div className="Dice">

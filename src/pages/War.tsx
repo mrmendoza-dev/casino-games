@@ -1,8 +1,5 @@
-import "../css/War.css";
-import { useState, useEffect } from "react";
-import cardBack from "../assets/images/back.png";
-import Card from "../components/Card";
-
+import cardBack from "@/assets/images/back.png";
+import "@/styles/War.css";
 
 export default function War() {
   let computerScore = 0;
@@ -65,7 +62,6 @@ export default function War() {
     //         `;
     //     const winnerText = determineCardWinner(data.cards[0], data.cards[1]);
     //     header.textContent = winnerText;
-
     //     if (data.remaining === 0) {
     //       drawCardBtn.disabled = true;
     //       if (computerScore > myScore) {

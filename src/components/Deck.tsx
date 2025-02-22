@@ -1,308 +1,234 @@
+
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/common/Card";
 import { useState, useEffect } from "react";
-import { nanoid } from "nanoid";
-import "../css/Deck.css"
-import Card from "./Card"
+import { usePokerHand } from "@/utils/usePokerHand";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
-export default function Deck() {
-  const [deck, setDeck] = useState<
-    { suit: any; value: any; show: any; img: any }[]
-  >([]);
-  const [drawn, setDrawn] = useState<
-    { suit: any; value: any; show: any; img: any }[]
-  >([]);
-  const [jokers, setJokers] = useState(false);
-  const [display, setDisplay] = useState(true);
-  const [hand, setHand] = useState([]);
-  const [handScore, setHandScore] = useState("");
-
-  let remainingCards = deck.length;
-
-
-
-  const suits = ["clubs", "diamonds", "hearts", "spades"];
-
-  const cardValues: any = {
-    "a": 14,
-    "k": 13,
-    "q": 12,
-    "j": 11,
-    "10": 10,
-    "9": 9,
-    "8": 8,
-    "7": 7,
-    "6": 6,
-    "5": 5,
-    "4": 4,
-    "3": 3,
-    "2": 2,
-  };
-
-
-  function generateDeck() {
-    
-    let path = "./cards"
-    const cards = [];
-    suits.map((suit) => {
-      Object.entries(cardValues).map(([key, value]) => {
-        let card = {
-          suit: suit,
-          value: value,
-          show: true,
-          img: `${path}/${suit}-${key}.png`,
-        };
-        cards.push(card);
-      });
-    });
-
-    if (jokers) {
-      cards.push({
-        suit: "joker",
-        value: "b",
-        show: true,
-        img: `${path}/joker-b.png`,
-      });
-      cards.push({
-        suit: "joker",
-        value: "r",
-        show: true,
-        img: `${path}/joker-r.png`,
-      });
-    }
-    setDeck(cards);
-  }
-
-  function shuffleDeck() {
-    function shuffleArray(array: any) {
-      let tempArray = array;
-      for (let i = tempArray.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [tempArray[i], tempArray[j]] = [tempArray[j], tempArray[i]];
-      }
-      return tempArray;
-    }
-    let shuffledDeck = shuffleArray(deck);
-    setDeck([...shuffledDeck]);
-  }
-
-  function drawCard() {
-    if (deck.length >= 1) {
-      let tempList = deck;
-      let card: any = tempList.pop();
-      card.show = true;
-      setDeck([...tempList]);
-      setDrawn([...drawn, card]);
-      return card;
-    }
-  }
-  function drawHand() {
-    let numcards = 5;
-    let drawHand: any = [];
-    if (deck.length >= numcards) {
-      for (let i = 0; i < numcards; i++) {
-        let newCard = drawCard();
-        // newCard.show = true;
-        drawHand.push(newCard);
-      }
-    }
-
-    setHand(drawHand);
-    let score = checkHand(drawHand);
-    console.log(score);
-    setHandScore(score);
-
-  }
-
-  function hideAll() {
-    setDeck((current) =>
-      current.map((obj) => {
-        if (display) {
-          return { ...obj, show: false };
-        } else {
-          return { ...obj, show: true };
-        }
-      })
-    );
-    setDisplay((prevState) => !prevState);
-  }
-
-  function resetDeck() {
-    generateDeck();
-    // shuffleDeck();
-    setHand([]);
-    setDrawn([]);
-  }
-  
-  function toggleJokers() {
-    setJokers((prevState) => !prevState);
-  }
-
-function checkHand(hand: any) {
-  // Sort the hand in ascending order
-  hand.sort((a: any, b: any) => a.value - b.value);
-  console.log(hand);
-  setHand(hand);
-
-  // Check for Royal Flush
-  let isRoyalFlush = true;
-  for (let i = 1; i < hand.length; i++) {
-    if (
-      hand[i].value !== hand[i - 1].value + 1 ||
-      hand[i].suit !== hand[0].suit
-    ) {
-      isRoyalFlush = false;
-      break;
-    }
-  }
-
-  if (
-    isRoyalFlush &&
-    hand[0].value === 10 &&
-    hand[hand.length - 1].value === 14
-  )
-    return "Royal Flush";
-
-  // Check for Straight Flush
-  let isStraightFlush = true;
-  for (let i = 1; i < hand.length; i++) {
-    if (
-      hand[i].value !== hand[i - 1].value + 1 ||
-      hand[i].suit !== hand[0].suit
-    ) {
-      isStraightFlush = false;
-      break;
-    }
-  }
-  if (isStraightFlush) return "Straight Flush";
-
-  // Check for Four of a Kind
-  let fourOfAKindValue = null;
-  for (let i = 0; i < hand.length - 3; i++) {
-    if (hand[i].value === hand[i + 3].value) {
-      fourOfAKindValue = hand[i].value;
-      break;
-    }
-  }
-  if (fourOfAKindValue !== null) return "Four of a Kind";
-
-  // Check for Full House
-  let threeOfAKindValue = null;
-  let pairValue = null;
-  for (let i = 0; i < hand.length - 2; i++) {
-    if (hand[i].value === hand[i + 2].value) {
-      threeOfAKindValue = hand[i].value;
-      break;
-    }
-  }
-  for (let i = 0; i < hand.length - 1; i++) {
-    if (
-      hand[i].value === hand[i + 1].value &&
-      hand[i].value !== threeOfAKindValue
-    ) {
-      pairValue = hand[i].value;
-      break;
-    }
-  }
-  if (threeOfAKindValue !== null && pairValue !== null) return "Full House";
-
-  // Check for Flush
-  let isFlush = true;
-  for (let i = 1; i < hand.length; i++) {
-    if (hand[i].suit !== hand[0].suit) {
-      isFlush = false;
-      break;
-    }
-  }
-  if (isFlush) return "Flush";
-
-  // Check for Straight
-  let isStraight = true;
-  for (let i = 1; i < hand.length; i++) {
-    if (hand[i].value !== hand[i - 1].value + 1) {
-      isStraight = false;
-      break;
-    }
-  }
-  if (isStraight) return "Straight";
-
-  // Check for Three of a Kind
-  for (let i = 0; i < hand.length - 2; i++) {
-    if (hand[i].value === hand[i + 2].value) {
-      return "Three of a Kind";
-    }
-  }
-
-  // Check for Two Pairs
-  let firstPairValue = null;
-  let secondPairValue = null;
-  for (let i = 0; i < hand.length - 1; i++) {
-    if (hand[i].value === hand[i + 1].value) {
-      if (firstPairValue === null) {
-        firstPairValue = hand[i].value;
-      } else {
-        secondPairValue = hand[i].value;
-        break;
-      }
-    }
-  }
-  if (firstPairValue !== null && secondPairValue !== null) return "Two Pairs";
-
-  // Check for One Pair
-  for (let i = 0; i < hand.length - 1; i++) {
-    if (hand[i].value === hand[i + 1].value) {
-      return "One Pair";
-    }
-  }
-
-  // If no hand is found, return High Card
-  return "High Card";
+// types.ts
+export interface Card {
+  suit: string;
+  value: number;
+  show: boolean;
+  img: string;
 }
 
+export interface HandScore {
+  name: string;
+  rank: number;
+}
+
+// constants.ts
+export const SUITS = ["clubs", "diamonds", "hearts", "spades"] as const;
+
+export const CARD_VALUES = {
+  a: 14,
+  k: 13,
+  q: 12,
+  j: 11,
+  "10": 10,
+  "9": 9,
+  "8": 8,
+  "7": 7,
+  "6": 6,
+  "5": 5,
+  "4": 4,
+  "3": 3,
+  "2": 2,
+} as const;
+
+// utils/deckUtils.ts
+export const generateDeck = (includeJokers: boolean, show: boolean = true): Card[] => {
+  const path = "./cards";
+  const cards: Card[] = [];
+
+  SUITS.forEach((suit) => {
+    Object.entries(CARD_VALUES).forEach(([key, value]) => {
+      cards.push({
+        suit,
+        value,
+        show,
+        img: `${path}/${suit}-${key}.png`,
+      });
+    });
+  });
+
+  if (includeJokers) {
+    cards.push(
+      {
+        suit: "joker",
+        value: -1,
+        show,
+        img: `${path}/joker-b.png`,
+      },
+      {
+        suit: "joker",
+        value: -1,
+        show,
+        img: `${path}/joker-r.png`,
+      }
+    );
+  }
+
+  return cards;
+};
+
+export const shuffleArray = (array: any[]) => {
+  const tempArray = [...array];
+  for (let i = tempArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [tempArray[i], tempArray[j]] = [tempArray[j], tempArray[i]];
+  }
+  return tempArray;
+};
+
+
+// components/controls/DeckControls.tsx
+export const DeckControls = ({
+  onShowAll,
+  onHideAll,
+  onShuffle,
+  onReset,
+  onToggleJokers,
+  onDraw,
+  onDrawHand,
+  jokersEnabled,
+}: {
+  onShowAll: () => void;
+  onHideAll: () => void;
+  onShuffle: () => void;
+  onReset: () => void;
+  onToggleJokers: () => void;
+  onDraw: () => void;
+  onDrawHand: () => void;
+  jokersEnabled: boolean;
+}) => (
+  <div className="flex flex-col gap-2 p-4">
+    <div className="flex gap-2 mx-auto justify-center">
+      <Button variant="outline" className="text-foreground" onClick={onShowAll}>
+        Show
+      </Button>
+      <Button variant="outline" className="text-foreground" onClick={onHideAll}>
+        Hide
+      </Button>
+      <Button variant="outline" className="text-foreground" onClick={onShuffle}>
+        Shuffle
+      </Button>
+      <Button variant="outline" className="text-foreground" onClick={onReset}>
+        Reset
+      </Button>
+      <Button variant="outline" className="text-foreground" onClick={onToggleJokers}>
+        {jokersEnabled ? "Disable Jokers" : "Enable Jokers"}
+      </Button>
+    </div>
+    <div className="flex gap-2 mx-auto justify-center">
+      <Button variant="outline" className="text-foreground" onClick={onDraw}>
+        Draw
+      </Button>
+      <Button variant="outline" className="text-foreground" onClick={onDrawHand}>
+        Draw Hand
+      </Button>
+    </div>
+  </div>
+);
+
+// components/HandDisplay.tsx
+export const HandDisplay = ({ hand, score }: { hand: Card[]; score: string }) => (
+  <div className="w-full mx-auto">
+    <div className="flex items-center justify-center gap-2 flex-wrap">
+      {hand.map((card, index) => (
+        <Card {...card} key={index} />
+      ))}
+    </div>
+    <p className="text-2xl font-bold text-foreground text-center py-4">{score}</p>
+  </div>
+);
+
+
+// CardDeck.tsx
+export const CardDeck = () => {
+  const [deck, setDeck] = useState<Card[]>([]);
+  const [drawn, setDrawn] = useState<Card[]>([]);
+  const [jokers, setJokers] = useLocalStorage("includeJokers", false);
+  const [hand, setHand] = useState<Card[]>([]);
+  const [handScore, setHandScore] = useState("");
+
+  const { checkHand } = usePokerHand();
+
+  const handleShowAll = () => setDeck(deck.map(card => ({ ...card, show: true })));
+  const handleHideAll = () => setDeck(deck.map(card => ({ ...card, show: false })));
+  const handleShuffle = () => setDeck(shuffleArray(deck));
+
+
+function handleDrawCard() {
+  if (deck.length >= 1) {
+    const tempDeck = [...deck];
+    const drawnCard = tempDeck.pop()!;
+    const newCard = { ...drawnCard, show: true };
+    setDeck(tempDeck);
+    setDrawn([...drawn, newCard]);
+    setHand([...hand, newCard]);
+    setHandScore(checkHand(hand));
+    return newCard;
+  }
+}
+
+function handleDrawHand() {
+  const numCards = 5;
+
+  if (deck.length >= numCards) {
+    const tempDeck = [...deck];
+    const drawnCards = tempDeck
+      .splice(-numCards)
+      .map((card) => ({ ...card, show: true }));
+
+    setDeck(tempDeck);
+    setDrawn([...drawn, ...drawnCards]);
+    setHand(drawnCards);
+
+    const score = checkHand(drawnCards);
+    setHandScore(score);
+  }
+}
+
+  const handleReset = () => {
+    const newDeck = generateDeck(jokers, false);
+    const shuffledDeck = shuffleArray(newDeck);
+    setDeck(shuffledDeck);
+    setHand([]);
+    setDrawn([]);
+    setHandScore("");
+  };
+
+  const handleToggleJokers = () => {
+    setJokers(!jokers);
+    setDeck(generateDeck(!jokers));
+  };
+
   useEffect(() => {
-    generateDeck();
+    handleReset();
   }, []);
 
-
-
-
-
-
   return (
-    <div className="Deck">
-      <div className="deck-controls">
-        <button className="btn" onClick={hideAll}>
-          {display ? "Hide" : "Show"}
-        </button>
-        <button className="btn" onClick={shuffleDeck}>
-          Shuffle
-        </button>
-        <button className="btn" onClick={drawCard}>
-          Draw
-        </button>
-        <button className="btn" onClick={resetDeck}>
-          Reset
-        </button>
-        <button className="btn" onClick={toggleJokers}>
-          {jokers ? "Disable Jokers" : "Enable Jokers"}
-        </button>
-        <button className="btn" onClick={drawHand}>
-          Draw Hand
-        </button>
-      </div>
+    <div className="w-full">
+      <DeckControls
+        onShowAll={handleShowAll}
+        onHideAll={handleHideAll}
+        onShuffle={handleShuffle}
+        onReset={handleReset}
+        onToggleJokers={handleToggleJokers}
+        onDraw={handleDrawCard}
+        onDrawHand={handleDrawHand}
+        jokersEnabled={jokers}
+      />
 
-      <div className="hand">
-        <div className="hand-cards">
-          {hand.map((card: any) => {
-            return <Card card={card} key={nanoid()} />;
-          })}
-        </div>
-        <p className="hand-score">{handScore}</p>
-      </div>
+      <HandDisplay hand={hand} score={handScore} />
 
-      <div className="cards">
-        {deck.map((card: any) => {
-          return <Card card={card} key={nanoid()} />;
-        })}
+      <div className="flex items-center justify-center gap-2 flex-wrap">
+        {deck.map((card, index) => (
+          <Card {...card} key={index} />
+        ))}
       </div>
     </div>
   );
-}
+};

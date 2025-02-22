@@ -1,8 +1,8 @@
-import "../css/Blackjack.css";
-import { useState, useEffect } from "react";
+import "@/styles/Blackjack.css";
+import { useState } from "react";
 
 export default function Blackjack() {
-  const [cards, setCards] = useState([])
+  const [cards, setCards] = useState([]);
   let sum = 0;
   let hasBlackJack = false;
   let isAlive = false;
@@ -32,7 +32,6 @@ export default function Blackjack() {
     // for (let i = 0; i < cards.length; i++) {
     //   cardsEl.textContent += cards[i] + " ";
     // }
-
     // sumEl.textContent = "Sum: " + sum;
     // if (sum <= 20) {
     //   message = "Do you want to draw a new card?";
@@ -67,15 +66,11 @@ export default function Blackjack() {
 
           <div className="board-main">
             <div className="cards-drawn"></div>
-            <p >Total: </p>
+            <p>Total: </p>
           </div>
 
           <div className="board-footer">
-
-            <button
-              className="game-btn"
-              onClick={startGame}
-            >
+            <button className="game-btn" onClick={startGame}>
               START GAME
             </button>
             <button className="game-btn" onClick={newCard}>

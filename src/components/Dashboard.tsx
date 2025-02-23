@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input";
 import { MinusIcon, PlusIcon, XIcon } from "lucide-react";
 import { ChangeEvent } from "react";
 import { usePlayer } from "@/contexts/PlayerContext";
+import { AddFundsDialog } from "./AddFundsDialog";
+import { CashOutDialog } from "./CashOutDialog";
 
 interface BetButtonProps {
   value: number;
@@ -77,20 +79,11 @@ export const Dashboard = () => {
             <p className="font-semibold">{player.name}</p>
             <p className="text-green-400">${player.funds}</p>
             <div className="flex gap-2">
-              <Button
-                variant="outline"
-                className="hover:bg-green-500 hover:text-black transition-colors"
-                onClick={() => addFunds(100)}
-              >
-                Add Funds
-              </Button>
-              <Button
-                variant="outline"
-                className="hover:bg-red-500 hover:text-black transition-colors"
-                onClick={() => withdrawFunds(currentBet)}
-              >
-                Cash Out
-              </Button>
+              <AddFundsDialog onAddFunds={addFunds} />
+              <CashOutDialog
+                onCashOut={withdrawFunds}
+                maxAmount={player.funds}
+              />
             </div>
           </div>
         </div>

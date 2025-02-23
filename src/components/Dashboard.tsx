@@ -1,13 +1,10 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { MinusIcon, PlusIcon, XIcon } from "lucide-react";
-import { useState } from "react";
-
-interface Player {
-  name: string;
-  funds: number;
-}
+import { ChangeEvent } from "react";
+import { usePlayer } from "@/contexts/PlayerContext";
 
 interface BetButtonProps {
   value: number;
@@ -40,29 +37,27 @@ const BetButton = ({ value, onClick, variant, children }: BetButtonProps) => {
 };
 
 export const Dashboard = () => {
-  const [player, setPlayer] = useState<Player>({
-    name: "Player",
-    funds: 250,
-  });
+  const {
+    player,
+    currentBet,
+    setBet,
+    adjustBet,
+    resetBet,
+    addFunds,
+    withdrawFunds,
+    maxBet,
+  } = usePlayer();
 
-  const [bet, setBet] = useState(25);
-
-  const resetBet = () => setBet(25);
-
-  const adjustBet = (amount: number) => {
-    const newBet = bet + amount;
-    if (amount < 0 && newBet > 0) {
-      setBet(newBet);
-    } else if (amount > 0 && newBet <= player.funds) {
-      setBet(newBet);
-    }
+  const handleBetChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value) || 0;
+    setBet(value);
   };
 
   const betValues = [-100, -25, -10, -5, -1, 0, 1, 5, 10, 25, 100];
 
   return (
     <Card
-      className="relative max-w-screen-lg mx-auto mt-8 min-w-min bg-cover bg-center shadow-xl overflow-hidden"
+      className="flex-shrink-0 relative max-w-screen-lg w-full mx-auto mt-4 min-w-min bg-cover bg-center shadow-xl overflow-hidden"
       style={{ backgroundImage: "url('/images/blue-table.jpg')" }}
     >
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
@@ -71,7 +66,10 @@ export const Dashboard = () => {
         {/* Player Info Section */}
         <div className="flex items-center gap-4 text-lg">
           <Avatar className="w-24 h-24">
-            <AvatarImage src="/images/avatar.jpg" alt={player.name} />
+            <AvatarImage
+              src={player.avatar || "/images/avatar.jpg"}
+              alt={player.name}
+            />
             <AvatarFallback>{player.name[0]}</AvatarFallback>
           </Avatar>
 
@@ -82,12 +80,14 @@ export const Dashboard = () => {
               <Button
                 variant="outline"
                 className="hover:bg-green-500 hover:text-black transition-colors"
+                onClick={() => addFunds(100)}
               >
                 Add Funds
               </Button>
               <Button
                 variant="outline"
                 className="hover:bg-red-500 hover:text-black transition-colors"
+                onClick={() => withdrawFunds(currentBet)}
               >
                 Cash Out
               </Button>
@@ -97,37 +97,71 @@ export const Dashboard = () => {
 
         {/* Betting Section */}
         <div className="flex flex-col items-center gap-4 text-lg">
-          <div className="text-center">
-            <p>Adjust Your Bet</p>
-            <p className="text-2xl font-bold text-green-400">${bet}</p>
+          {/* Current Bet Input */}
+          <div className="flex items-center">
+            <p className="text-center mr-4">Adjust Your Bet</p>
+
+            <span className="text-xl text-green-400 mr-1">$</span>
+            <Input
+              value={currentBet}
+              onChange={handleBetChange}
+              type="number"
+              max={player.funds}
+              className="w-24 !text-xl text-green-400 bg-transparent border-green-400/20 focus:border-green-400 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            />
           </div>
+          <div className="flex items-center gap-2">
+            {/* Betting Controls */}
+            <div className="flex items-center gap-1">
+              {betValues.map((value, index) => {
+                if (value === 0) {
+                  return (
+                    <BetButton
+                      key="reset"
+                      value={value}
+                      onClick={resetBet}
+                      variant="reset"
+                    >
+                      <XIcon className="w-4 h-4" />
+                    </BetButton>
+                  );
+                }
 
-          <div className="grid grid-cols-11 gap-1">
-            {betValues.map((value, index) => {
-              if (value === 0) {
-                return (
-                  <BetButton
-                    key="reset"
-                    value={value}
-                    onClick={resetBet}
-                    variant="reset"
-                  >
-                    <XIcon className="w-4 h-4" />
-                  </BetButton>
-                );
-              }
+                if (value < 0) {
+                  return (
+                    <BetButton
+                      key={value}
+                      value={Math.abs(value)}
+                      onClick={() => adjustBet(value)}
+                      variant="minus"
+                    >
+                      {Math.abs(value)}
+                    </BetButton>
+                  );
+                }
+              })}
 
-              return (
-                <BetButton
-                  key={value}
-                  value={Math.abs(value)}
-                  onClick={() => adjustBet(value)}
-                  variant={value < 0 ? "minus" : "plus"}
-                >
-                  {Math.abs(value)}
-                </BetButton>
-              );
-            })}
+              {/* Positive Value Buttons */}
+              {betValues.map((value) => {
+                if (value > 0) {
+                  return (
+                    <BetButton
+                      key={value}
+                      value={Math.abs(value)}
+                      onClick={() => adjustBet(value)}
+                      variant="plus"
+                    >
+                      {value}
+                    </BetButton>
+                  );
+                }
+              })}
+
+              {/* Max Bet Button */}
+              <BetButton value={player.funds} onClick={maxBet} variant="plus">
+                Max
+              </BetButton>
+            </div>
           </div>
         </div>
       </CardContent>

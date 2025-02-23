@@ -1,4 +1,4 @@
-import { type Card } from "@/components/Deck";
+import { Card, type Card as CardType } from "@/contexts/DeckContext";
 
 type PokerHand =
   | "Royal Flush"
@@ -17,7 +17,7 @@ export const usePokerHand = () => {
     return hand.every((card) => card.suit === hand[0].suit);
   };
 
-  const isStraight = (hand: Card[]): boolean => {
+  const isStraight = (hand: any): boolean => {
     // Handle Ace-low straight (A,2,3,4,5)
     if (
       hand[0].value === 2 &&
@@ -41,18 +41,18 @@ export const usePokerHand = () => {
   const getCardCounts = (hand: Card[]): Map<number, number> => {
     const counts = new Map<number, number>();
     hand.forEach((card) => {
-      counts.set(card.value, (counts.get(card.value) || 0) + 1);
+      counts.set(card.value as number, (counts.get(card.value as number) || 0) + 1);
     });
     return counts;
   };
 
   const checkHand = (hand: Card[]): PokerHand => {
-    if (hand.length !== 5) {
-      throw new Error("Hand must contain exactly 5 cards");
-    }
+    // if (hand.length !== 5) {
+    //   throw new Error("Hand must contain exactly 5 cards");
+    // }
 
     // Sort hand by value
-    const sortedHand = [...hand].sort((a, b) => a.value - b.value);
+    const sortedHand: any = [...hand].sort((a: any, b: any) => a.value - b.value);
 
     const hasFlush = isFlush(sortedHand);
     const hasStraight = isStraight(sortedHand);

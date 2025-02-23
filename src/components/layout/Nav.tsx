@@ -6,7 +6,11 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { Pause, Play } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
+import { MusicPlayer } from "@/components/MusicPlayer";
 
 interface NavLink {
   name: string;
@@ -22,10 +26,10 @@ export const Nav = ({ className }: NavProps) => {
 
   const navLinks: NavLink[] = [
     // { name: "Poker", path: "/poker" },
-    // { name: "Blackjack", path: "/blackjack" },
+    { name: "Blackjack", path: "/blackjack" },
     // { name: "War", path: "/war" },
     // { name: "Dice", path: "/dice" },
-    // { name: "Deck", path: "/deck" },
+    { name: "Deck", path: "/deck" },
   ];
 
   return (
@@ -49,19 +53,17 @@ export const Nav = ({ className }: NavProps) => {
           <NavigationMenuList className="gap-1">
             {navLinks.map((link) => (
               <NavigationMenuItem key={link.path}>
-                <Link to={link.path}>
-                  <NavigationMenuLink
-                    className={cn(
-                      navigationMenuTriggerStyle(),
-                      "px-4 py-2 text-sm transition-colors",
-                      "hover:bg-white/10",
-                      "data-[active]:bg-white/10 data-[active]:text-white text-foreground",
-                      location.pathname === link.path &&
-                        "bg-white/10 text-white"
-                    )}
-                  >
-                    {link.name}
-                  </NavigationMenuLink>
+                <Link
+                  to={link.path}
+                  className={cn(
+                    navigationMenuTriggerStyle(),
+                    "px-4 py-2 text-sm transition-colors",
+                    "hover:bg-white/10",
+                    "data-[active]:bg-white/10 data-[active]:text-white text-foreground",
+                    location.pathname === link.path && "bg-white/10 text-white"
+                  )}
+                >
+                  {link.name}
                 </Link>
               </NavigationMenuItem>
             ))}
@@ -69,6 +71,7 @@ export const Nav = ({ className }: NavProps) => {
         </NavigationMenu>
         {/* Right Side Section - Reserved for future use */}
         <div className="w-[100px]" /> {/* Spacer for alignment */}
+        <MusicPlayer />
       </div>
     </div>
   );

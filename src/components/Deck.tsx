@@ -1,90 +1,11 @@
-
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/common/Card";
-import { useState, useEffect } from "react";
+import { useDeck, type Card as CardType } from "@/contexts/DeckContext";
 import { usePokerHand } from "@/utils/usePokerHand";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
 
-// types.ts
-export interface Card {
-  suit: string;
-  value: number;
-  show: boolean;
-  img: string;
-}
-
-export interface HandScore {
-  name: string;
-  rank: number;
-}
-
-// constants.ts
-export const SUITS = ["clubs", "diamonds", "hearts", "spades"] as const;
-
-export const CARD_VALUES = {
-  a: 14,
-  k: 13,
-  q: 12,
-  j: 11,
-  "10": 10,
-  "9": 9,
-  "8": 8,
-  "7": 7,
-  "6": 6,
-  "5": 5,
-  "4": 4,
-  "3": 3,
-  "2": 2,
-} as const;
-
-// utils/deckUtils.ts
-export const generateDeck = (includeJokers: boolean, show: boolean = true): Card[] => {
-  const path = "./cards";
-  const cards: Card[] = [];
-
-  SUITS.forEach((suit) => {
-    Object.entries(CARD_VALUES).forEach(([key, value]) => {
-      cards.push({
-        suit,
-        value,
-        show,
-        img: `${path}/${suit}-${key}.png`,
-      });
-    });
-  });
-
-  if (includeJokers) {
-    cards.push(
-      {
-        suit: "joker",
-        value: -1,
-        show,
-        img: `${path}/joker-b.png`,
-      },
-      {
-        suit: "joker",
-        value: -1,
-        show,
-        img: `${path}/joker-r.png`,
-      }
-    );
-  }
-
-  return cards;
-};
-
-export const shuffleArray = (array: any[]) => {
-  const tempArray = [...array];
-  for (let i = tempArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [tempArray[i], tempArray[j]] = [tempArray[j], tempArray[i]];
-  }
-  return tempArray;
-};
-
-
-// components/controls/DeckControls.tsx
-export const DeckControls = ({
+const DeckControls = ({
+  cards,
   onShowAll,
   onHideAll,
   onShuffle,
@@ -94,6 +15,7 @@ export const DeckControls = ({
   onDrawHand,
   jokersEnabled,
 }: {
+  cards: CardType[];
   onShowAll: () => void;
   onHideAll: () => void;
   onShuffle: () => void;
@@ -117,7 +39,11 @@ export const DeckControls = ({
       <Button variant="outline" className="text-foreground" onClick={onReset}>
         Reset
       </Button>
-      <Button variant="outline" className="text-foreground" onClick={onToggleJokers}>
+      <Button
+        variant="outline"
+        className="text-foreground"
+        onClick={onToggleJokers}
+      >
         {jokersEnabled ? "Disable Jokers" : "Enable Jokers"}
       </Button>
     </div>
@@ -125,108 +51,156 @@ export const DeckControls = ({
       <Button variant="outline" className="text-foreground" onClick={onDraw}>
         Draw
       </Button>
-      <Button variant="outline" className="text-foreground" onClick={onDrawHand}>
+      <Button
+        variant="outline"
+        className="text-foreground"
+        onClick={onDrawHand}
+      >
         Draw Hand
       </Button>
     </div>
-  </div>
-);
-
-// components/HandDisplay.tsx
-export const HandDisplay = ({ hand, score }: { hand: Card[]; score: string }) => (
-  <div className="w-full mx-auto">
-    <div className="flex items-center justify-center gap-2 flex-wrap">
-      {hand.map((card, index) => (
-        <Card {...card} key={index} />
-      ))}
+    <div className="text-center mt-4 text-sm text-muted-foreground">
+      Cards remaining: {cards.length}
     </div>
-    <p className="text-2xl font-bold text-foreground text-center py-4">{score}</p>
   </div>
 );
 
+const formatCardValue = (card: CardType) => {
+  if (typeof card.value === "number") {
+    // Convert numerical values to be compatible with poker scoring
+    if (card.value === 1) return 14; // Ace is high
+    return card.value;
+  }
+  // Convert face cards to numerical values
+  switch (card.value) {
+    case "A":
+      return 14;
+    case "K":
+      return 13;
+    case "Q":
+      return 12;
+    case "J":
+      return 11;
+    default:
+      return -1; // Handle jokers or invalid values
+  }
+};
 
-// CardDeck.tsx
-export const CardDeck = () => {
-  const [deck, setDeck] = useState<Card[]>([]);
-  const [drawn, setDrawn] = useState<Card[]>([]);
-  const [jokers, setJokers] = useLocalStorage("includeJokers", false);
-  const [hand, setHand] = useState<Card[]>([]);
-  const [handScore, setHandScore] = useState("");
-
+export const HandDisplay = ({ hand }: { hand: any }) => {
   const { checkHand } = usePokerHand();
 
-  const handleShowAll = () => setDeck(deck.map(card => ({ ...card, show: true })));
-  const handleHideAll = () => setDeck(deck.map(card => ({ ...card, show: false })));
-  const handleShuffle = () => setDeck(shuffleArray(deck));
+  // Only calculate poker hand for 5 or fewer cards, excluding jokers
+  const showPokerHand =
+    hand.length <= 5 &&
+    hand.length > 0 &&
+    !hand.some((card: any) => card.suit === "joker");
 
+  const pokerHand = showPokerHand
+    ? checkHand(
+        hand.map((card: any) => ({
+          ...card,
+          value: formatCardValue(card),
+        }))
+      )
+    : null;
 
-function handleDrawCard() {
-  if (deck.length >= 1) {
-    const tempDeck = [...deck];
-    const drawnCard = tempDeck.pop()!;
-    const newCard = { ...drawnCard, show: true };
-    setDeck(tempDeck);
-    setDrawn([...drawn, newCard]);
-    setHand([...hand, newCard]);
-    setHandScore(checkHand(hand));
-    return newCard;
-  }
-}
+  return (
+    <div className="w-full mx-auto my-4">
+      {showPokerHand && pokerHand && (
+        <div className="text-center mb-4">
+          <h3 className="text-xl font-semibold text-foreground">{pokerHand}</h3>
+          <p className="text-sm text-muted-foreground">
+            {hand.length < 5
+              ? `(${5 - hand.length} more cards needed for a full hand)`
+              : ""}
+          </p>
+        </div>
+      )}
 
-function handleDrawHand() {
-  const numCards = 5;
+      <div className="flex items-center justify-center gap-2 flex-wrap">
+        {hand.map((card: any) => (
+          <Card {...card} key={card.id} show={true} />
+        ))}
+      </div>
+    </div>
+  );
+};
 
-  if (deck.length >= numCards) {
-    const tempDeck = [...deck];
-    const drawnCards = tempDeck
-      .splice(-numCards)
-      .map((card) => ({ ...card, show: true }));
+export const CardDeck = ({ gameId = "demo" }: { gameId?: string }) => {
+  const {
+    cards,
+    drawn,
+    jokers,
+    drawCards,
+    returnCards,
+    shuffle,
+    toggleCardVisibility,
+    setJokers,
+    createDeck,
+  } = useDeck(gameId);
 
-    setDeck(tempDeck);
-    setDrawn([...drawn, ...drawnCards]);
-    setHand(drawnCards);
+  const [drawnCards, setDrawnCards] = useState<CardType[]>([]);
 
-    const score = checkHand(drawnCards);
-    setHandScore(score);
-  }
-}
+  const handleShowAll = () => {
+    const cardIds = cards.map((card) => card.id);
+    toggleCardVisibility(cardIds, true);
+  };
+
+  const handleHideAll = () => {
+    const cardIds = cards.map((card) => card.id);
+    toggleCardVisibility(cardIds, false);
+  };
+
+  const handleShuffle = () => {
+    shuffle();
+  };
 
   const handleReset = () => {
-    const newDeck = generateDeck(jokers, false);
-    const shuffledDeck = shuffleArray(newDeck);
-    setDeck(shuffledDeck);
-    setHand([]);
-    setDrawn([]);
-    setHandScore("");
+    setDrawnCards([]);
+    returnCards(drawn);
+    createDeck(gameId, jokers, true);
   };
 
   const handleToggleJokers = () => {
     setJokers(!jokers);
-    setDeck(generateDeck(!jokers));
+    setDrawnCards([]);
   };
 
-  useEffect(() => {
-    handleReset();
-  }, []);
+  const handleDraw = () => {
+    const newCards = drawCards(1);
+    if (newCards.length > 0) {
+      setDrawnCards((current) => [...current, ...newCards]);
+    }
+  };
+
+  const handleDrawHand = () => {
+    const newCards = drawCards(5);
+    if (newCards.length > 0) {
+      setDrawnCards(newCards);
+    }
+  };
 
   return (
     <div className="w-full">
       <DeckControls
+        cards={cards}
         onShowAll={handleShowAll}
         onHideAll={handleHideAll}
         onShuffle={handleShuffle}
         onReset={handleReset}
         onToggleJokers={handleToggleJokers}
-        onDraw={handleDrawCard}
+        onDraw={handleDraw}
         onDrawHand={handleDrawHand}
         jokersEnabled={jokers}
       />
 
-      <HandDisplay hand={hand} score={handScore} />
+
+
+      <HandDisplay hand={drawnCards} />
 
       <div className="flex items-center justify-center gap-2 flex-wrap">
-        {deck.map((card, index) => (
-          <Card {...card} key={index} />
+        {cards.map((card) => (
+          <Card {...card} key={card.id} />
         ))}
       </div>
     </div>

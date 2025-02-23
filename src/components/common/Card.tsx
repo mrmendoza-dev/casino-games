@@ -4,8 +4,6 @@ export const Card = ({ value, suit, show, img }: any) => {
   const [showCard, setShowCard] = useState(show);
   const [isFlipping, setIsFlipping] = useState(false);
 
-  const card = { value, suit, show, img };
-
   const handleClick = () => {
     animateFlip(!showCard);
   };
@@ -38,7 +36,7 @@ export const Card = ({ value, suit, show, img }: any) => {
       {showCard ? (
         <img
           className="object-fit w-full px-1 py-1 pointer-events-none rounded-lg select-none backface-hidden"
-          src={card.img}
+          src={`/cards/${suit}-${value}.png`}
           alt={`${value} of ${suit}`}
         />
       ) : (

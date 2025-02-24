@@ -1,13 +1,12 @@
+import { useSound } from "@/contexts/SoundContext";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 import {
   createContext,
-  useContext,
-  useState,
-  useCallback,
   ReactNode,
+  useCallback,
+  useContext,
   useEffect,
 } from "react";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
-import { useSound } from "@/contexts/SoundContext";
 
 // Types
 interface Player {
@@ -18,7 +17,7 @@ interface Player {
 
 interface PlayerContextType {
   player: Player;
-  currentBet: number;
+  betAmount: number;
   updatePlayerName: (name: string) => void;
   updatePlayerFunds: (amount: number) => void;
   updatePlayerAvatar: (avatar: string) => void;
@@ -28,8 +27,8 @@ interface PlayerContextType {
   maxBet: () => void;
   addFunds: (amount: number) => void;
   withdrawFunds: (amount: number) => void;
-  handleGameWin: () => void;
-  handleGameLoss: () => void;
+  handleGameWin: (winnings: number) => void;
+  handleGameLoss: (betAmount: number) => void;
   handleGamePush: () => void;
 }
 
@@ -52,7 +51,7 @@ export const PlayerProvider = ({
   initialBet = 25,
 }: PlayerProviderProps) => {
   const [player, setPlayer] = useLocalStorage("player", initialPlayer);
-  const [currentBet, setCurrentBet] = useLocalStorage("currentBet", initialBet);
+  const [betAmount, setBetAmount] = useLocalStorage("betAmount", initialBet);
   const { playSound } = useSound();
 
   const updatePlayerName = useCallback((name: string) => {
@@ -70,7 +69,7 @@ export const PlayerProvider = ({
   const setBet = useCallback(
     (amount: number) => {
       if (amount >= 0 && amount <= player.funds) {
-        setCurrentBet(amount);
+        setBetAmount(amount);
       }
     },
     [player.funds]
@@ -78,22 +77,22 @@ export const PlayerProvider = ({
 
   const adjustBet = useCallback(
     (amount: number) => {
-      const newBet = currentBet + amount;
+      const newBet = betAmount + amount;
       if (amount < 0 && newBet > 0) {
-        setCurrentBet(newBet);
+        setBetAmount(newBet);
       } else if (amount > 0 && newBet <= player.funds) {
-        setCurrentBet(newBet);
+        setBetAmount(newBet);
       }
     },
-    [currentBet, player.funds]
+    [betAmount, player.funds]
   );
 
   const maxBet = useCallback(() => {
-    setCurrentBet(player.funds);
+    setBetAmount(player.funds);
   }, [player.funds]);
 
   const resetBet = useCallback(() => {
-    setCurrentBet(initialBet);
+    setBetAmount(initialBet);
   }, [initialBet]);
 
   const addFunds = useCallback((amount: number) => {
@@ -110,38 +109,35 @@ export const PlayerProvider = ({
     }));
   }, []);
 
+  const handleGameWin = useCallback((winnings: number) => {
+    setPlayer((prev: Player) => ({
+      ...prev,
+      funds: prev.funds + winnings,
+    }));
+    playSound("win");
+  }, []);
 
-    const handleGameWin = useCallback(() => {
-      setPlayer((prev: Player) => ({
-        ...prev,
-        funds: prev.funds + currentBet, // Add winnings to funds
-      }));
-      playSound("win");
-    }, [currentBet]);
+  const handleGameLoss = useCallback((betAmount: number) => {
+    setPlayer((prev: Player) => ({
+      ...prev,
+      funds: prev.funds - betAmount,
+    }));
+    playSound("lose");
+  }, []);
 
-    const handleGameLoss = useCallback(() => {
-      setPlayer((prev: Player) => ({
-        ...prev,
-        funds: prev.funds - currentBet, // Subtract loss from funds
-      }));
-      playSound("lose");
-    }, [currentBet]);
+  const handleGamePush = useCallback(() => {
+    // No change in funds for a push/tie
+  }, []);
 
-      const handleGamePush = useCallback(() => {
-        // No change in funds for a push/tie
-      }, []);
-
-
-    useEffect(() => {
-      if (currentBet > player.funds) {
-        setCurrentBet(player.funds);
-      }
-    }, [player.funds]);
-
+  useEffect(() => {
+    if (betAmount > player.funds) {
+      setBetAmount(player.funds);
+    }
+  }, [player.funds]);
 
   const value = {
     player,
-    currentBet,
+    betAmount,
     updatePlayerName,
     updatePlayerFunds,
     updatePlayerAvatar,

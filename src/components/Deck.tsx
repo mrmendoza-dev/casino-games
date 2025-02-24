@@ -26,7 +26,7 @@ const DeckControls = ({
   jokersEnabled: boolean;
 }) => (
   <div className="flex flex-col gap-2 p-4">
-    <div className="flex gap-2 mx-auto justify-center">
+    <div className="flex flex-wrap gap-2 mx-auto justify-center">
       <Button variant="outline" className="text-foreground" onClick={onShowAll}>
         Show
       </Button>

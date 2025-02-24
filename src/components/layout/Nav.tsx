@@ -30,6 +30,7 @@ export const Nav = ({ className }: NavProps) => {
     // { name: "War", path: "/war" },
     // { name: "Dice", path: "/dice" },
     { name: "Deck", path: "/deck" },
+    { name: "Roulette", path: "/roulette" },
   ];
 
   return (

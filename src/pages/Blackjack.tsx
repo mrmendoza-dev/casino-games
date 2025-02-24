@@ -84,7 +84,7 @@ const HandDisplay = ({ hand, label, gameStatus }: HandDisplayProps) => (
 export const Blackjack = () => {
   const gameId = "blackjack";
   const { cards, drawCards, createDeck } = useDeck(gameId);
-    const { handleGameWin, handleGameLoss, handleGamePush } = usePlayer();
+    const { handleGameWin, handleGameLoss, handleGamePush, betAmount } = usePlayer();
 
 
   const [playerHand, setPlayerHand] = useState<CardType[]>([]);
@@ -160,13 +160,13 @@ const dealCards = () => {
 
       if (dealerValue > 21) {
         setMessage("Dealer busts! You win!");
-        handleGameWin();
+        handleGameWin(betAmount);
       } else if (dealerValue > playerValue) {
         setMessage("Dealer wins!");
-        handleGameLoss();
+        handleGameLoss(betAmount);
       } else if (dealerValue < playerValue) {
         setMessage("You win!");
-        handleGameWin();
+        handleGameWin(betAmount);
       } else {
         setMessage("Push - it's a tie!");
         handleGamePush();
@@ -191,7 +191,7 @@ const dealCards = () => {
       const value = calculateHandValue(newHand);
       if (value > 21) {
         setMessage("Bust! Dealer wins");
-        handleGameLoss(); // Add this
+        handleGameLoss(betAmount); // Add this
         setGameStatus("complete");
         setDealerHand(dealerHand.map((card) => ({ ...card, show: true })));
       }

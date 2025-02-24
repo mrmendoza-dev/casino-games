@@ -41,7 +41,7 @@ const BetButton = ({ value, onClick, variant, children }: BetButtonProps) => {
 export const Dashboard = () => {
   const {
     player,
-    currentBet,
+    betAmount,
     setBet,
     adjustBet,
     resetBet,
@@ -64,7 +64,7 @@ export const Dashboard = () => {
     >
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
 
-      <CardContent className="relative z-10 flex justify-center gap-8 p-4">
+      <CardContent className="relative z-10 flex flex-wrap justify-center gap-8 p-4">
         {/* Player Info Section */}
         <div className="flex items-center gap-4 text-lg">
           <Avatar className="w-24 h-24">
@@ -77,7 +77,7 @@ export const Dashboard = () => {
 
           <div className="space-y-2">
             <p className="font-semibold">{player.name}</p>
-            <p className="text-green-400">${player.funds}</p>
+            <p className="text-green-400">${player.funds.toLocaleString()}</p>
             <div className="flex gap-2">
               <AddFundsDialog onAddFunds={addFunds} />
               <CashOutDialog
@@ -96,7 +96,7 @@ export const Dashboard = () => {
 
             <span className="text-xl text-green-400 mr-1">$</span>
             <Input
-              value={currentBet}
+              value={betAmount}
               onChange={handleBetChange}
               type="number"
               max={player.funds}

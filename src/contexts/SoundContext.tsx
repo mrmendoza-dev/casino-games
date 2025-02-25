@@ -8,15 +8,20 @@ import {
 } from "react";
 
 interface SoundContextType {
+  // Music controls
   isMusicPlaying: boolean;
-  isSoundMuted: boolean;
   musicVolume: number;
-  effectsVolume: number;
   toggleMusic: () => void;
-  toggleMute: () => void;
-  playSound: (soundName: SoundEffect) => void;
   setMusicVolume: (volume: number) => void;
+
+  // Sound effects controls
+  isSoundEffectsMuted: boolean;
+  effectsVolume: number;
+  toggleSoundEffects: () => void;
   setEffectsVolume: (volume: number) => void;
+
+  // Sound playback
+  playSound: (soundName: SoundEffect) => void;
   stopAllSounds: () => void;
 }
 
@@ -32,6 +37,7 @@ const SOUND_EFFECTS = {
   lose: "/sounds/lose.mp3",
   chip: "/sounds/chip.mp3",
   button: "/sounds/button-click.mp3",
+  bust: "/sounds/bust.mp3",
 } as const;
 
 type SoundEffect = keyof typeof SOUND_EFFECTS;
@@ -43,19 +49,22 @@ export const SoundProvider = ({
   defaultMusicVolume = 0.5,
   defaultEffectsVolume = 0.7,
 }: SoundProviderProps) => {
+  // Music state
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
-  const [isSoundMuted, setIsSoundMuted] = useState(false);
   const [musicVolume, setMusicVolume] = useState(defaultMusicVolume);
-  const [effectsVolume, setEffectsVolume] = useState(defaultEffectsVolume);
   const [backgroundMusic, setBackgroundMusic] =
     useState<HTMLAudioElement | null>(null);
+
+  // Sound effects state
+  const [isSoundEffectsMuted, setIsSoundEffectsMuted] = useState(false);
+  const [effectsVolume, setEffectsVolume] = useState(defaultEffectsVolume);
   const [soundEffects] = useState<Map<string, HTMLAudioElement>>(new Map());
 
   // Initialize background music
   useEffect(() => {
     const music = new Audio("/sounds/casino-night.mp3");
     music.loop = true;
-    music.volume = isSoundMuted ? 0 : musicVolume;
+    music.volume = musicVolume;
     setBackgroundMusic(music);
 
     return () => {
@@ -64,22 +73,25 @@ export const SoundProvider = ({
     };
   }, []);
 
-  // Handle mute state changes
+  // Handle music volume changes
   useEffect(() => {
     if (backgroundMusic) {
-      backgroundMusic.volume = isSoundMuted ? 0 : musicVolume;
+      backgroundMusic.volume = musicVolume;
     }
+  }, [musicVolume, backgroundMusic]);
 
+  // Handle sound effects volume changes
+  useEffect(() => {
     soundEffects.forEach((sound) => {
-      sound.volume = isSoundMuted ? 0 : effectsVolume;
+      sound.volume = isSoundEffectsMuted ? 0 : effectsVolume;
     });
-  }, [isSoundMuted, musicVolume, effectsVolume, backgroundMusic, soundEffects]);
+  }, [isSoundEffectsMuted, effectsVolume, soundEffects]);
 
   // Handle music playing state
   useEffect(() => {
     if (!backgroundMusic) return;
 
-    if (isMusicPlaying && !isSoundMuted) {
+    if (isMusicPlaying) {
       const playPromise = backgroundMusic.play();
       if (playPromise !== undefined) {
         playPromise.catch(() => {
@@ -89,36 +101,35 @@ export const SoundProvider = ({
     } else {
       backgroundMusic.pause();
     }
-  }, [isMusicPlaying, isSoundMuted, backgroundMusic]);
+  }, [isMusicPlaying, backgroundMusic]);
 
   const toggleMusic = useCallback(() => {
     setIsMusicPlaying((prev) => !prev);
   }, []);
 
-  const toggleMute = useCallback(() => {
-    setIsSoundMuted((prev) => !prev);
+  const toggleSoundEffects = useCallback(() => {
+    setIsSoundEffectsMuted((prev) => !prev);
   }, []);
 
   const initSoundEffect = useCallback(
     (soundName: SoundEffect) => {
-      if (isSoundMuted) return;
+      if (isSoundEffectsMuted) return;
       if (!soundEffects.has(soundName)) {
         const audio = new Audio(SOUND_EFFECTS[soundName]);
-        audio.volume = isSoundMuted ? 0 : effectsVolume;
+        audio.volume = effectsVolume;
         soundEffects.set(soundName, audio);
         return audio;
       }
       return soundEffects.get(soundName)!;
     },
-    [soundEffects, isSoundMuted, effectsVolume]
+    [soundEffects, isSoundEffectsMuted, effectsVolume]
   );
 
   const playSound = useCallback(
     (soundName: SoundEffect) => {
-      if (isSoundMuted) return;
-      return;
+      if (isSoundEffectsMuted) return;
 
-      const sound: any = initSoundEffect(soundName);
+      const sound = initSoundEffect(soundName);
       if (!sound) return;
 
       // Clone the audio for overlapping sounds
@@ -126,7 +137,7 @@ export const SoundProvider = ({
       soundClone.volume = effectsVolume;
       soundClone.play().catch(() => {});
     },
-    [isSoundMuted, effectsVolume, initSoundEffect]
+    [isSoundEffectsMuted, effectsVolume, initSoundEffect]
   );
 
   const stopAllSounds = useCallback(() => {
@@ -141,15 +152,20 @@ export const SoundProvider = ({
   }, [backgroundMusic, soundEffects]);
 
   const value: SoundContextType = {
+    // Music controls
     isMusicPlaying,
-    isSoundMuted,
     musicVolume,
-    effectsVolume,
     toggleMusic,
-    toggleMute,
-    playSound,
     setMusicVolume,
+
+    // Sound effects controls
+    isSoundEffectsMuted,
+    effectsVolume,
+    toggleSoundEffects,
     setEffectsVolume,
+
+    // Sound playback
+    playSound,
     stopAllSounds,
   };
 

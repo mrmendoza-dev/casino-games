@@ -169,7 +169,7 @@ export const AddFundsDialog = ({
                 }
                 className="bg-green-600 hover:bg-green-500 text-white"
               >
-                Add ${amount || "0"}
+                Add ${Number(amount).toLocaleString() || "0"}
               </Button>
             </DialogClose>
           </DialogFooter>

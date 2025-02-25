@@ -109,21 +109,28 @@ export const PlayerProvider = ({
     }));
   }, []);
 
-  const handleGameWin = useCallback((winnings: number) => {
+const handleGameWin = useCallback(
+  (winnings: number) => {
     setPlayer((prev: Player) => ({
       ...prev,
       funds: prev.funds + winnings,
     }));
     playSound("win");
-  }, []);
+  },
+  [setPlayer]
+);
 
-  const handleGameLoss = useCallback((betAmount: number) => {
+const handleGameLoss = useCallback(
+  (betAmount: number) => {
     setPlayer((prev: Player) => ({
       ...prev,
       funds: prev.funds - betAmount,
     }));
     playSound("lose");
-  }, []);
+    // playSound("bust");
+  },
+  [setPlayer]
+);
 
   const handleGamePush = useCallback(() => {
     // No change in funds for a push/tie

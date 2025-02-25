@@ -29,7 +29,7 @@ export const RouletteWheel = () => {
   const [currentBet, setCurrentBet] = useState<Bet | null>(null);
   console.log(currentBet);
 
-  const SPIN_TIMER = 1000;
+  const SPIN_TIMER = 3000;
   const RED_NUMBERS = [
     32, 19, 21, 25, 34, 27, 36, 30, 23, 5, 16, 1, 14, 9, 18, 7, 12, 3,
   ];
@@ -76,12 +76,6 @@ const spin = useCallback(() => {
   const thisBet = { ...currentBet };
   const thisBetAmount = betAmount;
 
-  // Deduct bet amount immediately when spin starts
-  handleGameLoss(thisBetAmount);
-
-  // Clear current bet
-//   setCurrentBet(null);
-
   setTimeout(() => {
     setSelectedNumber(randomNumber);
   }, 50);
@@ -104,6 +98,7 @@ const spin = useCallback(() => {
       handleGameWin(winnings);
       toast.success(`You won $${winnings.toLocaleString()}!`);
     } else {
+      handleGameLoss(thisBetAmount);
       toast.error("Better luck next time!");
     }
 
@@ -182,24 +177,13 @@ const spin = useCallback(() => {
         </div>
       </div>
 
-      <div className="flex justify-center items-center gap-4">
-
-        <div className="flex justify-between items-center">
-          {currentBet && (
-            <div className="text-base text-center">
-              ${betAmount.toLocaleString()} on {currentBet.type}{" "}
-              {currentBet.value}
-            </div>
-          )}
-        </div>
-      </div>
 
       <BettingInterface
         isSpinning={isSpinning}
         onPlaceBet={handlePlaceBet}
-        betAmount={betAmount}
         currentBet={currentBet}
         spin={spin}
+        betAmount={betAmount}
       />
     </div>
   );
@@ -212,6 +196,7 @@ export const BettingInterface = ({
   onPlaceBet,
   currentBet,
   spin,
+  betAmount,
 }: {
   isSpinning: boolean;
   onPlaceBet: (bet: Bet) => void;
@@ -224,6 +209,7 @@ export const BettingInterface = ({
     value: string | number;
   } | null>(null);
 
+  
 
   const handleBetPlacement = (type: BetType, value: string | number) => {
     setActiveBet({ type, value });
@@ -255,7 +241,18 @@ export const BettingInterface = ({
     <Card className="w-full max-w-5xl mx-auto">
       <CardHeader>
         <CardTitle className="flex justify-between items-center">
-          Place Your Bets
+          <p> Place Your Bets</p>
+          <div className="flex justify-center items-center gap-4">
+            <div className="flex justify-between items-center">
+              {currentBet && (
+                <div className="text-base text-center">
+                  ${betAmount.toLocaleString()} on {currentBet.type}{" "}
+                  {currentBet.value}
+                </div>
+              )}
+            </div>
+          </div>
+
           <Button
             type="button"
             id="spin"
@@ -282,8 +279,8 @@ export const BettingInterface = ({
             : ""
         } ${
                 [
-                  1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34,
-                  36,
+                  32, 19, 21, 25, 34, 27, 36, 30, 23, 5, 16, 1, 14, 9, 18, 7,
+                  12, 3,
                 ].includes(number)
                   ? "bg-red-600 text-white hover:bg-red-700"
                   : number === 0

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/common/Card";
 import { useDeck } from "@/contexts/DeckContext";
@@ -84,59 +84,63 @@ const HandDisplay = ({ hand, label, gameStatus }: HandDisplayProps) => (
 export const Blackjack = () => {
   const gameId = "blackjack";
   const { cards, drawCards, createDeck } = useDeck(gameId);
-    const { handleGameWin, handleGameLoss, handleGamePush, betAmount } = usePlayer();
-
+  const { handleGameWin, handleGameLoss, handleGamePush, betAmount } =
+    usePlayer();
 
   const [playerHand, setPlayerHand] = useState<CardType[]>([]);
   const [dealerHand, setDealerHand] = useState<CardType[]>([]);
   const [gameStatus, setGameStatus] = useState<GameStatus>("complete");
   const [message, setMessage] = useState("");
 
+
+  useEffect(() => {
+    createNewDeck();
+  }, []);
   const createNewDeck = () => {
     const enableJokers = false;
     const showCards = true;
     createDeck(gameId, enableJokers, showCards);
   };
-const dealInitialCards = () => {
-  if (cards.length < 4) {
-    setMessage("Not enough cards in deck");
-    return;
-  }
+  const dealInitialCards = () => {
+    if (cards.length < 4) {
+      setMessage("Not enough cards in deck");
+      return;
+    }
 
-  // Clear both hands first
-  setDealerHand([]);
-  setPlayerHand([]);
+    // Clear both hands first
+    setDealerHand([]);
+    setPlayerHand([]);
 
-  const initialCards = drawCards(4);
-  if (initialCards.length === 4) {
-    setDealerHand([
-      { ...initialCards[1], show: true },
-      { ...initialCards[3], show: false },
-    ]);
-    setPlayerHand([
-      { ...initialCards[0], show: true },
-      { ...initialCards[2], show: true },
-    ]);
-    setGameStatus("playing");
-    setMessage("Your turn");
-  }
-};
+    const initialCards = drawCards(4);
+    if (initialCards.length === 4) {
+      setDealerHand([
+        { ...initialCards[1], show: true },
+        { ...initialCards[3], show: false },
+      ]);
+      setPlayerHand([
+        { ...initialCards[0], show: true },
+        { ...initialCards[2], show: true },
+      ]);
+      setGameStatus("playing");
+      setMessage("Your turn");
+    }
+  };
 
-const dealCards = () => {
-  // Clear hands immediately to avoid stale state
-  setDealerHand([]);
-  setPlayerHand([]);
+  const dealCards = () => {
+    // Clear hands immediately to avoid stale state
+    setDealerHand([]);
+    setPlayerHand([]);
 
-  if (isDeckDepleted(cards.length)) {
-    createNewDeck();
-    // Add slight delay before dealing to ensure deck is ready
-    setTimeout(() => {
-      dealInitialCards();
-    }, 100);
-    return;
-  }
-  dealInitialCards();
-};
+    if (isDeckDepleted(cards.length)) {
+      createNewDeck();
+      // Add slight delay before dealing to ensure deck is ready
+      setTimeout(() => {
+        dealInitialCards();
+      }, 100);
+      return;
+    }
+    dealInitialCards();
+  };
 
   const stand = () => {
     let currentDealerHand = dealerHand.map((card) => ({ ...card, show: true }));
@@ -244,16 +248,20 @@ const dealCards = () => {
       </div>
 
       <div className="space-y-0 mx-auto w-full">
-        {
-          dealerHand.length > 0 && (
-            <HandDisplay hand={dealerHand} label="Dealer" gameStatus={gameStatus} />
-          )
-        }
-        {
-          playerHand.length > 0 && (
-            <HandDisplay hand={playerHand} label="Player" gameStatus={gameStatus} />
-          )
-        }
+        {dealerHand.length > 0 && (
+          <HandDisplay
+            hand={dealerHand}
+            label="Dealer"
+            gameStatus={gameStatus}
+          />
+        )}
+        {playerHand.length > 0 && (
+          <HandDisplay
+            hand={playerHand}
+            label="Player"
+            gameStatus={gameStatus}
+          />
+        )}
       </div>
     </div>
   );

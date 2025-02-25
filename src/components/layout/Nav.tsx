@@ -1,15 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
-import { Pause, Play } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
 import { MusicPlayer } from "@/components/MusicPlayer";
 
 interface NavLink {
@@ -25,6 +15,7 @@ export const Nav = ({ className }: NavProps) => {
   const location = useLocation();
 
   const navLinks: NavLink[] = [
+    // { name: "Home", path: "/" },
     // { name: "Poker", path: "/poker" },
     { name: "Blackjack", path: "/blackjack" },
     // { name: "War", path: "/war" },
@@ -41,37 +32,35 @@ export const Nav = ({ className }: NavProps) => {
         className
       )}
     >
-      <div className="container flex items-center justify-between h-16 px-4">
+      <div className="flex items-center justify-between h-16 px-4">
         {/* Logo Section */}
         <Link
           to="/"
-          className="flex items-center gap-2 transition-opacity hover:opacity-80"
+          className="flex items-center gap-2 transition-all duration-300 hover:opacity-80 hover:scale-105"
         >
           <img src="/images/logo.png" alt="Logo" className="h-8 w-auto" />
+          <span className="text-white font-bold text-xl">Casino</span>
         </Link>
-        {/* Navigation Links */}
-        <NavigationMenu>
-          <NavigationMenuList className="gap-1">
-            {navLinks.map((link) => (
-              <NavigationMenuItem key={link.path}>
-                <Link
-                  to={link.path}
-                  className={cn(
-                    navigationMenuTriggerStyle(),
-                    "px-4 py-2 text-sm transition-colors",
-                    "hover:bg-white/10",
-                    "data-[active]:bg-white/10 data-[active]:text-white text-foreground",
-                    location.pathname === link.path && "bg-white/10 text-white"
-                  )}
-                >
-                  {link.name}
-                </Link>
-              </NavigationMenuItem>
-            ))}
-          </NavigationMenuList>
-        </NavigationMenu>
-        {/* Right Side Section - Reserved for future use */}
-        <div className="w-[100px]" /> {/* Spacer for alignment */}
+
+        <div className="flex items-center gap-2">
+          {navLinks.map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              className={cn(
+                "text-base font-medium transition-all duration-300",
+                "px-3 py-2 rounded-md relative",
+                "hover:text-white hover:bg-white/10",
+                location.pathname === link.path
+                  ? "text-white after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-cyan-500"
+                  : "text-gray-300"
+              )}
+            >
+              {link.name}
+            </Link>
+          ))}
+        </div>
+
         <MusicPlayer />
       </div>
     </div>

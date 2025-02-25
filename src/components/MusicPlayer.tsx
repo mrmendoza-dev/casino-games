@@ -1,16 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { Volume2, VolumeX, Music, Music4, Pause, Play } from "lucide-react";
+import { Volume2, VolumeX, Play, Pause } from "lucide-react";
 import { useSound } from "@/contexts/SoundContext";
 
 export const MusicPlayer = () => {
   const {
     isMusicPlaying,
-    isSoundMuted,
+    isSoundEffectsMuted,
     musicVolume,
     effectsVolume,
     toggleMusic,
-    toggleMute,
+    toggleSoundEffects,
     setMusicVolume,
     setEffectsVolume,
   } = useSound();
@@ -49,9 +49,9 @@ export const MusicPlayer = () => {
           variant="outline"
           size="sm"
           className="w-10 h-10 text-foreground"
-          onClick={toggleMute}
+          onClick={toggleSoundEffects}
         >
-          {isSoundMuted ? (
+          {isSoundEffectsMuted ? (
             <VolumeX className="w-4 h-4" />
           ) : (
             <Volume2 className="w-4 h-4" />

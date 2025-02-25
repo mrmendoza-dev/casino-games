@@ -172,7 +172,7 @@ export const CashOutDialog = ({ onCashOut, maxAmount }: { onCashOut: (amount: nu
                 }
                 className="bg-red-600 hover:bg-red-500 text-white"
               >
-                Withdraw ${amount || "0"}
+                Withdraw ${Number(amount).toLocaleString() || "0"}
               </Button>
             </DialogClose>
           </DialogFooter>
